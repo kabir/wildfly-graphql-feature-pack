@@ -1,0 +1,50 @@
+# WildFly MicroProfile GraphQL Feature Pack
+
+> A Galleon feature pack that adds MicroProfile GraphQL support to WildFly. It provides the `microprofile-graphql` Galleon layer, which installs the `microprofile-graphql-smallrye` subsystem backed by SmallRye GraphQL. This enables applications deployed on WildFly to expose GraphQL APIs using the Eclipse MicroProfile GraphQL specification, with support for queries, mutations, GraphQL client (including Vert.x-based), and the GraphiQL developer UI. The feature pack depends on WildFly's core Galleon pack and the WildFly Reactive feature pack.
+
+## Documentation
+
+- [README](./README.md): Project overview, installation instructions using Galleon CLI or WildFly Maven Plugin, and links to quickstarts and specifications
+- [Installation Guide (Wiki)](https://github.com/wildfly-extras/wildfly-graphql-feature-pack/wiki/Installation-guide): Detailed installation steps for adding this feature pack to WildFly
+- [Supported Versions (Wiki)](https://github.com/wildfly-extras/wildfly-graphql-feature-pack/wiki/Supported-versions-and-future-versions-roadmap): Compatibility matrix showing which feature pack versions work with which WildFly versions
+- [Quickstart README](./quickstart/README.md): Step-by-step tutorial demonstrating GraphQL queries, mutations, source fields, and the GraphiQL UI using a Star Wars example application
+- [Build Module README](./build/README.md): Explains the build outputs — thin distribution, full distribution, and overlay ZIP
+
+## Feature Pack Definition
+
+- [Galleon Layer Spec](./feature-pack/src/main/resources/layers/standalone/microprofile-graphql/layer-spec.xml): Defines the `microprofile-graphql` layer — depends on `cdi`, `microprofile-config`, and `microprofile-context-propagation` layers; includes the GraphQL subsystem extension and SmallRye GraphQL modules
+- [Feature Pack Build Descriptor](./feature-pack/wildfly-feature-pack-build.xml): Galleon build descriptor declaring transitive dependency on `wildfly-ee-galleon-pack` and direct dependencies on `wildfly-galleon-pack` and `wildfly-microprofile-reactive-feature-pack`
+- [Feature Group](./feature-pack/src/main/resources/feature_groups/graphql.xml): Galleon feature group definition for the GraphQL subsystem configuration
+- [Provisioning Example](./provision.xml): Example Galleon provisioning descriptor showing how to provision a WildFly server with `microprofile-graphql`, `jaxrs-server`, `observability`, and `jmx-remoting` layers
+
+## Subsystem Extension
+
+- [subsystem/](./subsystem/): WildFly subsystem extension implementation for the `microprofile-graphql-smallrye` subsystem
+- [MicroProfileGraphQLExtension](./subsystem/src/main/java/org/wildfly/extension/microprofile/graphql/MicroProfileGraphQLExtension.java): Subsystem extension entry point — registers the subsystem parser and model definition
+- [MicroProfileGraphQLSubsystemDefinition](./subsystem/src/main/java/org/wildfly/extension/microprofile/graphql/MicroProfileGraphQLSubsystemDefinition.java): Subsystem resource definition with add/remove handlers
+- [MicroProfileGraphQLDeploymentProcessor](./subsystem/src/main/java/org/wildfly/extension/microprofile/graphql/deployment/MicroProfileGraphQLDeploymentProcessor.java): Deployment unit processor that integrates SmallRye GraphQL into application deployments
+- [GraphiQLUIDeploymentProcessor](./subsystem/src/main/java/org/wildfly/extension/microprofile/graphql/deployment/GraphiQLUIDeploymentProcessor.java): Deployment processor that enables the GraphiQL developer UI endpoint
+
+## JBoss Modules
+
+- [SmallRye GraphQL Module](./feature-pack/src/main/resources/modules/system/layers/base/io/smallrye/graphql/main/module.xml): JBoss Module definition for the SmallRye GraphQL server implementation
+- [SmallRye GraphQL API Module](./feature-pack/src/main/resources/modules/system/layers/base/io/smallrye/graphql/api/main/module.xml): JBoss Module for SmallRye GraphQL API
+- [SmallRye GraphQL Client API Module](./feature-pack/src/main/resources/modules/system/layers/base/io/smallrye/graphql/client/api/main/module.xml): JBoss Module for the SmallRye GraphQL Client API
+- [SmallRye GraphQL Client Vert.x Module](./feature-pack/src/main/resources/modules/system/layers/base/io/smallrye/graphql/client/vertx/main/module.xml): JBoss Module for the Vert.x-based GraphQL Client implementation
+- [MicroProfile GraphQL API Module](./feature-pack/src/main/resources/modules/system/layers/base/org/eclipse/microprofile/graphql/api/main/module.xml): JBoss Module for the Eclipse MicroProfile GraphQL specification API
+- [Subsystem Extension Module](./feature-pack/src/main/resources/modules/system/layers/base/org/wildfly/extension/microprofile/graphql-smallrye/main/module.xml): JBoss Module for the WildFly subsystem extension
+
+## Quickstart
+
+- [quickstart/](./quickstart/): Example application demonstrating MicroProfile GraphQL with a Star Wars domain model (Film, Hero, LightSaber entities), including GraphQL queries, mutations, source fields, and a typesafe GraphQL client test
+
+## Test Suite
+
+- [testsuite/integration/](./testsuite/integration/): Integration tests covering GraphQL API functionality, GraphiQL UI, security (Elytron), context propagation, batch source queries, async operations, and bean validation
+- [testsuite/server-tck/](./testsuite/server-tck/): MicroProfile GraphQL TCK (Technology Compatibility Kit) runner for specification compliance validation
+- [testsuite/client-vertx/](./testsuite/client-vertx/): Tests for the Vert.x-based GraphQL client
+
+## Build
+
+- [build/](./build/): Module that provisions a complete WildFly distribution with the GraphQL feature pack installed, producing thin, full, and overlay ZIP artifacts
+- [CI Workflow](./.github/workflows/build.yml): GitHub Actions CI configuration
