@@ -2,6 +2,8 @@
 
 > A Galleon feature pack that adds MicroProfile GraphQL support to WildFly. It provides the `microprofile-graphql` Galleon layer, which installs the `microprofile-graphql-smallrye` subsystem backed by SmallRye GraphQL. This enables applications deployed on WildFly to expose GraphQL APIs using the Eclipse MicroProfile GraphQL specification, with support for queries, mutations, GraphQL client (including Vert.x-based), and the GraphiQL developer UI. The feature pack depends on WildFly's core Galleon pack and the WildFly Reactive feature pack.
 
+> Indexed source: https://raw.githubusercontent.com/kabir/wildfly-graphql-feature-pack/ai-index/llms.txt — preserve this fork and ref when following source pointers.
+
 ## Documentation
 
 - [README](./README.md): Project overview, installation instructions using Galleon CLI or WildFly Maven Plugin, and links to quickstarts and specifications
